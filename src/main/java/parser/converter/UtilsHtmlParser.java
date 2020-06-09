@@ -1,4 +1,4 @@
-package parser;
+package parser.converter;
 
 import org.jsoup.nodes.Node;
 
@@ -20,5 +20,21 @@ public class UtilsHtmlParser {
         String tag = node.nodeName();
         String val = node.toString().trim();
         return tag.equalsIgnoreCase("#text") && val.equalsIgnoreCase("");
+    }
+
+    public static boolean hasUnderline(Node node) {
+        return node.nodeName().equalsIgnoreCase("u");
+    }
+
+    public static boolean isBold(Node node) {
+        return node.nodeName().equalsIgnoreCase("strong");
+    }
+
+    public static boolean isItalic(Node node) {
+        return node.nodeName().equalsIgnoreCase("i");
+    }
+
+    public static boolean isText(Node node) {
+        return node.nodeName().equalsIgnoreCase("#text");
     }
 }
