@@ -37,7 +37,7 @@ public class ConverterHtmlToStruct {
     }
 
 
-    public List<ParagraphStruct> getParagraphs() {
-        return paragraphs;
+    public Document getDocument() {
+        return new Document(paragraphs);
     }
 }

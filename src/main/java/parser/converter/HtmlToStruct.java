@@ -17,9 +17,7 @@ public class HtmlToStruct {
         Node body = doc.body();
         processNode(body);
 
-        System.out.println(converterHtmlToStruct.getParagraphs());
     }
-
 
     public void processNode(Node node){
         register(node);
@@ -34,6 +32,10 @@ public class HtmlToStruct {
         }else if(node.nodeName().equalsIgnoreCase("#text")){
             converterHtmlToStruct.addStyle(node);
         }
+    }
+
+    public parser.converter.Document getDocument(){
+        return converterHtmlToStruct.getDocument();
     }
 
 }
