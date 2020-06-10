@@ -73,13 +73,20 @@ public class Word implements Component {
         contentStream.showText(textContent);
         contentStream.endText();
 
+        if(style.isUnderline()) {
+            contentStream.setStrokingColor(style.getTextColor());
+            contentStream.addRect(startX, startY + height+1f, getWidth(), 0);
+            contentStream.stroke();
+        }
+
+        /*
         contentStream.setStrokingColor(new Color(255,255,125));
         contentStream.addRect(startX,startY,getWidth(),height);
         contentStream.stroke();
 
-       contentStream.setStrokingColor(new Color(255,255,125));
+        contentStream.setStrokingColor(new Color(255,255,125));
         contentStream.addRect(startX,startY,1,-1);
-        contentStream.stroke();
+        contentStream.stroke();*/
     }
 
 }
