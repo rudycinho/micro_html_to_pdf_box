@@ -1,5 +1,8 @@
 package parser.lib;
 
+import lombok.Getter;
+
+@Getter
 public class StyleStruct {
     private boolean hasItalic;
     private boolean hasBold;

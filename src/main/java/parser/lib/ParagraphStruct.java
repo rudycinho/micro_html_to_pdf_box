@@ -1,9 +1,12 @@
 package parser.lib;
 
+import lombok.Getter;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+@Getter
 public class ParagraphStruct {
     private List<TextStruct> texts;
 
