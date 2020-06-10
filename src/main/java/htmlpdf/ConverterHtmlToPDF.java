@@ -2,16 +2,20 @@ package htmlpdf;
 
 import graphics.basic.Alignment;
 import graphics.basic.Style;
+import graphics.setters.Setter;
 import graphics.text.Word;
+import graphics.text.WordLine;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import parser.converter.Document;
 import parser.lib.ParagraphStruct;
+import parser.lib.StyleStruct;
+import parser.lib.TextStruct;
 
 import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConverterHtmlToPDF {
     public static void convert(
@@ -19,7 +23,56 @@ public class ConverterHtmlToPDF {
             Document d) throws IOException {
         List<ParagraphStruct> paragraphs = d.getParagraphs();
 
-        drawWord(contentStream);
+        //drawWord(contentStream);
+        //drawWords(contentStream);
+        drawWordLine(contentStream);
+    }
+
+    private static void drawWordLine(PDPageContentStream contentStream) throws IOException {
+        StyleStruct s = new StyleStruct();
+        s.bold();
+        s.italic();
+
+        String t = "Hello world, how are you in this day?";
+
+        TextStruct text = new TextStruct(t,s);
+
+        WordLine w = Setter.createWordLineWithWords(Setter.listWordFromText(text));
+        w.setDX(20f);
+        w.setDY(-40f);
+        w.rebuild();
+
+
+        w.draw(contentStream);
+
+    }
+
+    private static void drawWords(PDPageContentStream contentStream) throws IOException {
+        StyleStruct s = new StyleStruct();
+        s.isHasBold();
+        s.isHasItalic();
+
+        String t = "Hello world, how are you in this day?";
+
+        TextStruct text = new TextStruct(t,s);
+
+        List<Word> words= Setter.listWordFromText(text);
+
+        float posX = 20f;
+        float posY = -40f;
+
+        for ( Word word : words) {
+            word.setDX(posX);
+            word.setDY(posY);
+            word.rebuild();
+            try {
+                word.draw(contentStream);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            posX = word.getWidth() + posX;
+        }
+
     }
 
     private static void drawWord(PDPageContentStream contentStream) throws IOException {

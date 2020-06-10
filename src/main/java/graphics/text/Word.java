@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
+import java.awt.*;
 import java.io.IOException;
 
 @Getter
@@ -72,13 +73,13 @@ public class Word implements Component {
         contentStream.showText(textContent);
         contentStream.endText();
 
-        /*contentStream.setStrokingColor(Color.ORANGE);
-        contentStream.addRect(startX,startY,width,height);
+        contentStream.setStrokingColor(Color.ORANGE);
+        contentStream.addRect(startX,startY,getWidth(),height);
         contentStream.stroke();
 
        contentStream.setStrokingColor(Color.BLACK);
         contentStream.addRect(startX,startY,1,-1);
-        contentStream.stroke();*/
+        contentStream.stroke();
     }
 
 }

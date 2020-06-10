@@ -4,6 +4,7 @@ import graphics.basic.Alignment;
 import graphics.basic.Style;
 import graphics.text.Paragraph;
 import graphics.text.Word;
+import graphics.text.WordLine;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import parser.lib.ParagraphStruct;
@@ -18,6 +19,15 @@ import java.util.stream.Collectors;
 public class Setter {
     public static Paragraph createParagraph(ParagraphStruct p){
         return null;
+    }
+
+    public static WordLine createWordLineWithWords(List<Word> words){
+        WordLine wordLine =  WordLine.builder()
+                .alignment(Alignment.LEFT)
+                .words(words)
+                .build();
+        wordLine.build();
+        return wordLine;
     }
 
     public static List<Word> listWordFromParagraph(ParagraphStruct paragraph){

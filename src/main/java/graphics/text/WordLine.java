@@ -3,6 +3,7 @@ package graphics.text;
 import graphics.basic.Alignment;
 import graphics.basic.Component;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
+@Builder
 public class WordLine implements Component {
     private float startX;
     private float startY;
@@ -77,30 +79,4 @@ public class WordLine implements Component {
         //contentStream.addRect(startX,startY,width,height);
         //contentStream.stroke();
     }
-
-    /*public static class WordLineBuilder{
-        private WordLine wordLine = new WordLine();
-
-        public WordLineBuilder addWord(Word word){
-            float dx = wordLine.startX - word.getStartX();
-            float dy = wordLine.startY - word.getStartY();
-
-            word.setDX(dx);
-            word.setDY(-dy);
-            word.rebuild();
-
-            wordLine.words.add(word);
-            wordLine.width += word.getWidth();
-
-            return this;
-        }
-
-        public WordLineBuilder addWords(List<Word> words){
-            for( Word word : words)
-                addWord(word);
-            return this;
-        }
-
-
-    }*/
 }
