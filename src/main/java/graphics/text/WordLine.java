@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,6 +63,7 @@ public class WordLine implements Component {
             word.rebuild();
         }
 
+        width = auxX;
         height= auxY;
 
         for(Word word : words){
@@ -75,8 +77,8 @@ public class WordLine implements Component {
         for(Word word : words)
             word.draw(contentStream);
 
-        //contentStream.setStrokingColor(Color.RED);
-        //contentStream.addRect(startX,startY,width,height);
-        //contentStream.stroke();
+        contentStream.setStrokingColor(Color.RED);
+        contentStream.addRect(startX,startY,width,height);
+        contentStream.stroke();
     }
 }

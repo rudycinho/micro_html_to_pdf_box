@@ -1,17 +1,25 @@
 package graphics.text;
 
+import graphics.basic.Alignment;
+import graphics.basic.Component;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+
+import java.awt.*;
+import java.io.IOException;
+import java.util.List;
 
 @Getter
 @Builder
-public class Paragraph /*implements Component*/ {
-    /*private float startX;
+@AllArgsConstructor
+public class Paragraph implements Component {
+    private float startX;
     private float startY;
     private float width;
     private float height;
 
-    private Style     style;
     private Alignment alignment;
 
     private List<WordLine> wordLines;
@@ -21,7 +29,7 @@ public class Paragraph /*implements Component*/ {
 
     @Override
     public float getHeight() {
-        return height - style.getSeparation();
+        return height;// - style.getSeparation();
     }
 
     @Override
@@ -34,19 +42,28 @@ public class Paragraph /*implements Component*/ {
         this.dY = dY;
     }
 
+    public void build() {
+        float auxY = startY;
+
+        for(WordLine line : wordLines){
+            line.setDY(auxY);
+            auxY -= line.getWidth();
+            line.setDY(auxY);
+            line.rebuild();
+        }
+    }
 
     @Override
     public void rebuild() {
         startX = startX + dX;
         startY = startY - dY;
 
-        for(WordLine word : wordLines){
-            word.setDX(dX);
-            word.setDY(dY);
-            word.rebuild();
+        for(WordLine line : wordLines){
+            line.setDX(dX);
+            line.setDY(dY);
+            line.rebuild();
         }
-        dX = 0;
-        dY = 0;
+        dX = 0;dY = 0;
     }
 
 
@@ -55,72 +72,8 @@ public class Paragraph /*implements Component*/ {
         for(WordLine wordLine : wordLines)
             wordLine.draw(contentStream);
 
-        //contentStream.setStrokingColor(Color.RED);
-        //contentStream.addRect(startX,startY,width,height);
-        //contentStream.stroke();
+        contentStream.setStrokingColor(Color.BLUE);
+        contentStream.addRect(startX,startY,width,height);
+        contentStream.stroke();
     }
-
-    public static class ParagraphMultipleBuilder{
-        private Paragraph paragraph = new Paragraph();
-        private final List<Word> words = new LinkedList<>();
-
-
-        public ParagraphMultipleBuilder addWord(Word word){
-            float dx = paragraph.startX - word.getStartX();
-            float dy = paragraph.startY - word.getStartY();
-
-            word.setDX(dx);
-            word.setDY(-dy);
-            word.rebuild();
-
-            this.words.add(word);
-
-            return this;
-        }
-
-        public ParagraphMultipleBuilder addWords(List<Word> words){
-            for(Word word : words)
-                addWord(word);
-            return this;
-        }
-
-        public Paragraph build() throws IOException {
-            float auxStartX = paragraph.startX;
-            float auxStartY = paragraph.startY;
-
-            float auxWidth      = 0;
-            List<Word> auxList  = new LinkedList<>();
-
-            for(Word word : this.words){
-
-                if(auxWidth + word.getWidth() > paragraph.width){
-                    WordLine wordLine = WordLine.builder()
-                            .addStartX(auxStartX)
-                            .addStartY(auxStartY)
-                            .addWords(auxList)
-                            .build();
-                    paragraph.wordLines.add(wordLine);
-                    auxList = new LinkedList<>();
-                    auxList.add(word);
-                    auxWidth = word.getWidth();
-                    auxStartY = auxStartY + wordLine.getHeight();
-                }else {
-                    auxWidth = auxWidth + word.getWidth();
-                    auxList.add(word);
-                }
-            }
-            if(!auxList.isEmpty()){
-                WordLine wordLine = WordLine.builder()
-                        .addStartX(auxStartX)
-                        .addStartY(auxStartY)
-                        .addWords(auxList)
-                        .build();
-                paragraph.wordLines.add(wordLine);
-                auxStartY = auxStartY + wordLine.getHeight();
-            }
-            paragraph.height = auxStartY - paragraph.startY;
-
-            return paragraph;
-        }
-    }*/
 }

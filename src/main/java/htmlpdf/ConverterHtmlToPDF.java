@@ -3,6 +3,7 @@ package htmlpdf;
 import graphics.basic.Alignment;
 import graphics.basic.Style;
 import graphics.setters.Setter;
+import graphics.text.Paragraph;
 import graphics.text.Word;
 import graphics.text.WordLine;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -12,10 +13,9 @@ import parser.lib.ParagraphStruct;
 import parser.lib.StyleStruct;
 import parser.lib.TextStruct;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConverterHtmlToPDF {
     public static void convert(
@@ -25,7 +25,17 @@ public class ConverterHtmlToPDF {
 
         //drawWord(contentStream);
         //drawWords(contentStream);
-        drawWordLine(contentStream);
+        //drawWordLine(contentStream);
+        //drawParagraph(contentStream, paragraphs.get(0));
+        drawParagraph(contentStream, paragraphs.get(1));
+    }
+
+    private static void drawParagraph(
+            PDPageContentStream contentStream,
+            ParagraphStruct paragraphStruct) throws IOException {
+
+        Paragraph paragraph = Setter.createParagraphWithCoordinates(paragraphStruct,500f,Alignment.LEFT,20f,-400f);
+        paragraph.draw(contentStream);
     }
 
     private static void drawWordLine(PDPageContentStream contentStream) throws IOException {
@@ -41,7 +51,6 @@ public class ConverterHtmlToPDF {
         w.setDX(20f);
         w.setDY(-40f);
         w.rebuild();
-
 
         w.draw(contentStream);
 

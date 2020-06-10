@@ -17,12 +17,82 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Setter {
-    public static Paragraph createParagraph(ParagraphStruct p){
-        return null;
+    public static Paragraph createParagraphWithCoordinates(
+            ParagraphStruct p,
+            float width,
+            Alignment alignment,
+            float startX,
+            float startY){
+        Paragraph paragraph = createParagraph(p,width,alignment);
+        paragraph.setDX(startX);
+        paragraph.setDY(startY);
+        paragraph.rebuild();
+        return paragraph;
+    }
+
+    public static Paragraph createParagraph(
+            ParagraphStruct p,float width,Alignment alignment
+            ){
+        List<Word>     wordsOfParagraph = listWordFromParagraph(p);
+        List<Word>     wordsOfText      = new LinkedList<>();
+        List<WordLine> linesOfParagraph = new LinkedList<>();
+
+        float auxStartX = 0f;
+        float auxStartY = 0f;
+        float auxWidth  = 0;
+
+        for(Word word : wordsOfParagraph){
+
+            if(auxWidth + word.getWidth() > width){
+
+                WordLine line = createWordLineWithWordsWithCoordinates(wordsOfText,auxStartX,auxStartY);
+
+                linesOfParagraph.add(line);
+
+                wordsOfText = new LinkedList<>();
+                wordsOfText.add(word);
+
+                auxWidth = word.getWidth();
+                auxStartY = auxStartY - line.getHeight();
+            }else {
+                auxWidth = auxWidth + word.getWidth();
+                wordsOfText.add(word);
+            }
+        }
+        if(!wordsOfText.isEmpty()){
+            WordLine line = createWordLineWithWordsWithCoordinates(wordsOfText,auxStartX,auxStartY);
+            linesOfParagraph.add(line);
+            auxStartY = auxStartY + line.getHeight();
+        }
+        Paragraph paragraph = Paragraph.builder()
+                .alignment(alignment)
+                .startX(auxStartX)
+                .startY(auxStartY)
+                .height(auxStartY-auxStartY )
+                .wordLines(linesOfParagraph)
+                .width(width)
+                .build();
+
+        //paragraph.build();
+
+        return paragraph;
+    }
+
+    public static WordLine createWordLineWithWordsWithCoordinates(
+            List<Word> words,
+            float startX, float startY){
+
+        WordLine wordLine =  createWordLineWithWords(words);
+        wordLine.setDX(startX);
+        wordLine.setDY(startY);
+        wordLine.rebuild();
+        return wordLine;
     }
 
     public static WordLine createWordLineWithWords(List<Word> words){
         WordLine wordLine =  WordLine.builder()
+                .startX(0f)
+                .startY(0f)
                 .alignment(Alignment.LEFT)
                 .words(words)
                 .build();
