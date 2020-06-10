@@ -77,8 +77,8 @@ public class WordLine implements Component {
         for(Word word : words)
             word.draw(contentStream);
 
-        contentStream.setStrokingColor(Color.RED);
-        contentStream.addRect(startX,startY,width,height);
-        contentStream.stroke();
+        //contentStream.setStrokingColor(Color.RED);
+        //contentStream.addRect(startX,startY,width,height);
+        //contentStream.stroke();
     }
 }

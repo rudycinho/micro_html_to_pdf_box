@@ -21,21 +21,40 @@ public class ConverterHtmlToPDF {
     public static void convert(
             PDPageContentStream contentStream,
             Document d) throws IOException {
-        List<ParagraphStruct> paragraphs = d.getParagraphs();
+        //List<ParagraphStruct> paragraphs = d.getParagraphs();
 
         //drawWord(contentStream);
         //drawWords(contentStream);
         //drawWordLine(contentStream);
         //drawParagraph(contentStream, paragraphs.get(0));
-        drawParagraph(contentStream, paragraphs.get(1));
+        //drawParagraph(contentStream, paragraphs.get(1));
+        drawDocument(contentStream, d);
+    }
+
+    private static void drawDocument(
+            PDPageContentStream contentStream,
+            Document document) throws IOException {
+
+        List<Paragraph> paragraphs = Setter.createDocument(document, 500f,Alignment.LEFT,60f,-750f);
+
+        for(Paragraph paragraph : paragraphs) {
+            paragraph.draw(contentStream);
+        }
+        //contentStream.setStrokingColor(Color.GREEN);
+        //contentStream.addRect(20f,700f,500f,-1000);
+        //contentStream.stroke();
     }
 
     private static void drawParagraph(
             PDPageContentStream contentStream,
             ParagraphStruct paragraphStruct) throws IOException {
 
-        Paragraph paragraph = Setter.createParagraphWithCoordinates(paragraphStruct,500f,Alignment.LEFT,20f,-400f);
+        Paragraph paragraph = Setter.createParagraphWithCoordinates(paragraphStruct,500f,Alignment.LEFT,20f,-700f);
         paragraph.draw(contentStream);
+
+        //contentStream.setStrokingColor(Color.GREEN);
+        //contentStream.addRect(20f,700f,500f,-1000);
+        //contentStream.stroke();
     }
 
     private static void drawWordLine(PDPageContentStream contentStream) throws IOException {

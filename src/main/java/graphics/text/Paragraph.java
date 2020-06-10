@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Getter;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class Paragraph implements Component {
 
     @Override
     public float getHeight() {
-        return height;// - style.getSeparation();
+        return height;
     }
 
     @Override
@@ -72,8 +71,8 @@ public class Paragraph implements Component {
         for(WordLine wordLine : wordLines)
             wordLine.draw(contentStream);
 
-        contentStream.setStrokingColor(Color.BLUE);
-        contentStream.addRect(startX,startY,width,height);
-        contentStream.stroke();
+        //contentStream.setStrokingColor(Color.BLUE);
+        //contentStream.addRect(startX,startY,width,height);
+        //contentStream.stroke();
     }
 }

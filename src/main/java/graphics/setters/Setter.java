@@ -7,6 +7,7 @@ import graphics.text.Word;
 import graphics.text.WordLine;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import parser.converter.Document;
 import parser.lib.ParagraphStruct;
 import parser.lib.StyleStruct;
 import parser.lib.TextStruct;
@@ -17,6 +18,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Setter {
+    public static List<Paragraph> createDocument(
+            Document doc,
+            float width,
+            Alignment alignment,
+            float startX,
+            float startY){
+        List<ParagraphStruct> ps   = doc.getParagraphs();
+        List<Paragraph> paragraphs = new LinkedList<>();
+        Paragraph paragraph;
+
+        for(ParagraphStruct p : ps){
+            paragraph = createParagraphWithCoordinates(p,width,alignment,startX,startY);
+            paragraphs.add(paragraph);
+            startY = startY - paragraph.getHeight();
+        }
+
+        return paragraphs;
+    }
+
     public static Paragraph createParagraphWithCoordinates(
             ParagraphStruct p,
             float width,
@@ -62,13 +82,13 @@ public class Setter {
         if(!wordsOfText.isEmpty()){
             WordLine line = createWordLineWithWordsWithCoordinates(wordsOfText,auxStartX,auxStartY);
             linesOfParagraph.add(line);
-            auxStartY = auxStartY + line.getHeight();
+            auxStartY = auxStartY - line.getHeight();
         }
         Paragraph paragraph = Paragraph.builder()
                 .alignment(alignment)
                 .startX(auxStartX)
-                .startY(auxStartY)
-                .height(auxStartY-auxStartY )
+                .startY(0)
+                .height(-auxStartY-5f )
                 .wordLines(linesOfParagraph)
                 .width(width)
                 .build();
@@ -136,11 +156,13 @@ public class Setter {
     }
 
     private static PDFont getFont(StyleStruct style) {
-        PDType1Font font;
-        if(style.isHasBold() && style.isHasItalic())    font = PDType1Font.HELVETICA_BOLD_OBLIQUE;
-        else if(style.isHasBold())                      font = PDType1Font.HELVETICA_BOLD;
-        else if(style.isHasBold())                      font = PDType1Font.HELVETICA_BOLD;
-        else                                            font = PDType1Font.HELVETICA;
+        PDType1Font font= PDType1Font.HELVETICA;
+        if(style.isHasBold() && style.isHasItalic())
+            font = PDType1Font.HELVETICA_BOLD_OBLIQUE;
+        else {
+            if (style.isHasItalic()) font = PDType1Font.HELVETICA_OBLIQUE;
+            if (style.isHasBold()) font = PDType1Font.HELVETICA_BOLD;
+        }
         return font;
     }
 }

@@ -73,11 +73,11 @@ public class Word implements Component {
         contentStream.showText(textContent);
         contentStream.endText();
 
-        contentStream.setStrokingColor(Color.ORANGE);
+        contentStream.setStrokingColor(new Color(255,255,125));
         contentStream.addRect(startX,startY,getWidth(),height);
         contentStream.stroke();
 
-       contentStream.setStrokingColor(Color.BLACK);
+       contentStream.setStrokingColor(new Color(255,255,125));
         contentStream.addRect(startX,startY,1,-1);
         contentStream.stroke();
     }
